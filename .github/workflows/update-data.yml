@@ -1,0 +1,36 @@
+name: Update data
+
+# Refreshes the auto figures (World Bank) and commits any changes.
+# Runs monthly and on-demand. World Bank updates annually, so monthly is plenty.
+on:
+  schedule:
+    - cron: "0 7 1 * *"   # 07:00 UTC on the 1st of each month
+  workflow_dispatch: {}    # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write          # allows the action to commit data.json
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch latest figures
+        run: node scripts/fetch-data.mjs
+
+      - name: Commit if changed
+        run: |
+          if [ -n "$(git status --porcelain data.json)" ]; then
+            git config user.name "data-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add data.json
+            git commit -m "chore: auto-update World Bank figures"
+            git push
+          else
+            echo "No changes to commit."
+          fi

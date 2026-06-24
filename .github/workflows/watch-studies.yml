@@ -1,0 +1,40 @@
+name: Watch source studies
+
+# Checks the manual fiscal/population source pages and flags when one changes,
+# so you know a new study may be out and a number needs human review.
+on:
+  schedule:
+    - cron: "0 8 * * 1"   # 08:00 UTC every Monday
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check source pages
+        id: watch
+        run: node scripts/watch-studies.mjs
+        continue-on-error: true   # a "change detected" exit code shouldn't fail the run
+
+      - name: Save updated watch state
+        run: |
+          if [ -n "$(git status --porcelain scripts/.watch-state.json)" ]; then
+            git config user.name "watch-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add scripts/.watch-state.json
+            git commit -m "chore: update study watch state"
+            git push
+          fi
+
+      - name: Flag if a study changed
+        if: steps.watch.outcome == 'failure'
+        run: |
+          echo "::warning::A watched source page changed — a new study may be out. Review and update data.json."

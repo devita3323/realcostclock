@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Real Cost Clock — Prototype</title>
+<style>
+  :root{
+    --bg:#0a0e14; --panel:#121823; --panel2:#0f141d; --line:#1f2a3a;
+    --txt:#e8eef6; --muted:#8aa0bb; --accent:#d4af37; --green:#3fbf7f; --red:#e25555;
+    --t1:#d4af37; --t2:#5b9bd5;
+    --mono:'SF Mono',ui-monospace,'Roboto Mono',Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#13203a 0%,var(--bg) 55%);
+       color:var(--txt);font-family:var(--sans);line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  header{text-align:center;padding:18px 0 8px}
+  .flagbar{height:4px;width:120px;margin:0 auto 18px;
+    background:linear-gradient(90deg,#b22234 33%,#fff 33% 66%,#3c3b6e 66%);border-radius:2px}
+  h1{font-size:clamp(28px,5vw,46px);margin:0 0 6px;letter-spacing:-.5px}
+  .tag{color:var(--muted);max-width:640px;margin:0 auto;font-size:15px}
+  .tag b{color:var(--accent)}
+  .legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:22px 0 6px;font-size:12.5px;color:var(--muted)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:18px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+        border-radius:14px;padding:18px 18px 14px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--t1)}
+  .card.t2::before{background:var(--t2)}
+  .label{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .pill{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid var(--line);color:var(--t1)}
+  .t2 .pill{color:var(--t2)}
+  .num{font-family:var(--mono);font-size:clamp(26px,3.4vw,34px);font-weight:600;letter-spacing:-1px;line-height:1.1}
+  .sub{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .srcline{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:12px}
+  .srcline a{color:var(--t2);text-decoration:none}
+  .srcline a:hover{text-decoration:underline}
+  .est{color:var(--accent)}
+  .sectitle{margin:34px 0 4px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  .note{background:#0f141d;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:28px;font-size:13.5px;color:var(--muted)}
+  .note b{color:var(--txt)}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+  .range{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .range .lo{color:var(--green)} .range .hi{color:var(--red)}
+  .updated{font-size:11px;color:#5f7a99;}
+  .stamp{font-size:11px;color:#637a96}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="flagbar"></div>
+    <h1>The Real Cost Clock</h1>
+    <p class="tag">What current immigration &amp; guest-worker policy costs you — <b>counted from the government's own numbers.</b> Every figure links back to its primary source.</p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--t1)"></span>Hard count — official federal data</span>
+      <span><span class="dot" style="background:var(--t2)"></span>Labeled estimate — research org, range shown</span>
+    </div>
+  </header>
+
+  <div class="sectitle">Guest-worker visas — annual, official</div>
+  <div class="grid">
+    <div class="card">
+      <div class="label">H-1B registrations filed <span class="pill">FY2025</span></div>
+      <div class="num" data-count="470342" data-dur="2200">0</div>
+      <div class="sub">~135,000 were selected (≈29%). Cap: 85,000 new/yr.</div>
+      <div class="srcline">Source: <a href="https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process" target="_blank" rel="noopener">USCIS H-1B Registration Statistics ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="label">H-1B petitions approved <span class="pill">FY2024</span></div>
+      <div class="num" data-count="400000" data-prefix="~" data-dur="2200">0</div>
+      <div class="sub">~142,000 were <em>new</em> employment; the rest renewals.</div>
+      <div class="srcline">Source: <a href="https://www.uscis.gov/sites/default/files/document/legal-docs/ola_signed_fy2024_h1b_petitions.pdf" target="_blank" rel="noopener">USCIS FY2024 Report to Congress ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="label">H-2A farm positions certified <span class="pill">FY2024</span></div>
+      <div class="num" data-count="384000" data-prefix="~" data-dur="2200">0</div>
+      <div class="sub">Temporary agricultural labor certifications.</div>
+      <div class="srcline">Source: <a href="https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/H-2A_Selected_Statistics_FY2024_Q4.pdf" target="_blank" rel="noopener">DOL OFLC H-2A Statistics ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="label">H-2B non-farm positions certified <span class="pill">FY2024</span></div>
+      <div class="num" data-count="232995" data-dur="2200">0</div>
+      <div class="sub">Seasonal non-agricultural labor certifications.</div>
+      <div class="srcline">Source: <a href="https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/DOS-DOL_H-2B_Selected_Statistical_Factsheet_FY2024.pdf" target="_blank" rel="noopener">DOL OFLC H-2B Factsheet ↗</a></div>
+    </div>
+  </div>
+
+  <div class="sectitle">Money leaving the country — official</div>
+  <div class="grid">
+    <div class="card">
+      <div class="label">Remittances sent abroad from the U.S. <span class="pill">2024</span></div>
+      <div class="num"><span data-money="103000000000" data-dur="2600">$0</span></div>
+      <div class="sub">U.S. is the world's #1 remittance-sending country.</div>
+      <div class="srcline">Source: <a href="https://data.worldbank.org/indicator/BM.TRF.PWKR.CD.DT?locations=US" target="_blank" rel="noopener">World Bank Open Data ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="label">…accruing this year at the 2024 rate <span class="pill">projected</span></div>
+      <div class="num est" id="ticker">$0</div>
+      <div class="sub">Live projection at $103B/yr — <em>not</em> a measured real-time figure. Illustrates scale only.</div>
+      <div class="srcline">Basis: <a href="https://data.worldbank.org/indicator/BM.TRF.PWKR.CD.DT?locations=US" target="_blank" rel="noopener">World Bank 2024 outflow ↗</a></div>
+    </div>
+  </div>
+
+  <div class="sectitle">Contested figures — shown as a transparent range</div>
+  <div class="grid">
+    <div class="card t2">
+      <div class="label">Unauthorized population <span class="pill">estimate</span></div>
+      <div class="num est" data-count="14000000" data-prefix="~" data-dur="2400">0</div>
+      <div class="sub">Mid-2023. Methods vary roughly ±2 million.</div>
+      <div class="srcline">Source: <a href="https://www.pewresearch.org/wp-content/uploads/sites/20/2025/08/RE_2025.08.21_Unauthorized-Immigrants_REPORT.pdf" target="_blank" rel="noopener">Pew Research ↗</a> · <a href="https://ohss.dhs.gov/topics/immigration/data-statistics" target="_blank" rel="noopener">DHS OHSS ↗</a></div>
+    </div>
+    <div class="card t2">
+      <div class="label">Net fiscal cost of illegal immigration <span class="pill">estimate · disputed</span></div>
+      <div class="num est range"><span class="hi">$151B</span><span style="color:var(--muted);font-size:14px">high-end est.</span></div>
+      <div class="sub">FAIR (advocacy org) estimate, gross cost <em>minus</em> ~$32B in taxes paid by this group. Other bodies (Cato, CBO) estimate <b>far lower</b> or net-positive. We show the high end labeled — the honest move is to display the full range.</div>
+      <div class="srcline">Source: <a href="https://www.fairus.org/issue/publications-resources/fiscal-burden-illegal-immigration-united-states-taxpayers-2023" target="_blank" rel="noopener">FAIR 2023 Cost Study ↗</a></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Why it's built this way.</b> The categories you can't measure — off-the-books labor, "lost wages from Americans" — are deliberately left off as live counters, because a fabricated number would let critics discredit every real number beside it. The contested fiscal figure is shown as an <b>estimate with its source named and the offsetting taxes-paid noted</b>. That's what makes this version harder to attack than a site full of round, unsourced totals — and therefore more persuasive to a skeptic, a reporter, or a Congressional staffer.
+    <br><br>
+    <span class="stamp">Prototype · data current as of FY2024 / calendar-year 2024 agency releases · figures rounded · last reviewed June 2026</span>
+  </div>
+
+  <footer>Prototype for discussion. Replace placeholder estimates with live agency CSV pulls before launch. Not affiliated with any government agency.</footer>
+</div>
+
+<script>
+function fmt(n){return n.toLocaleString('en-US');}
+function animate(el,target,dur,prefix,money){
+  var start=performance.now();
+  function step(now){
+    var p=Math.min((now-start)/dur,1);
+    var eased=1-Math.pow(1-p,3);
+    var val=Math.floor(eased*target);
+    if(money){el.textContent='$'+fmt(val);}
+    else{el.textContent=(prefix||'')+fmt(val);}
+    if(p<1)requestAnimationFrame(step);
+    else{ if(money) el.textContent='$'+fmt(target); else el.textContent=(prefix||'')+fmt(target);}
+  }
+  requestAnimationFrame(step);
+}
+document.querySelectorAll('[data-count]').forEach(function(el){
+  animate(el,+el.dataset.count,+el.dataset.dur||2000,el.dataset.prefix||'',false);
+});
+document.querySelectorAll('[data-money]').forEach(function(el){
+  animate(el,+el.dataset.money,+el.dataset.dur||2400,'',true);
+});
+// projected live ticker: $103B/yr from Jan 1 of current year
+(function(){
+  var perYear=103000000000;
+  var start=new Date(new Date().getFullYear(),0,1).getTime();
+  var perMs=perYear/(365.25*24*3600*1000);
+  var t=document.getElementById('ticker');
+  function tick(){
+    var elapsed=Date.now()-start;
+    var v=Math.floor(elapsed*perMs);
+    t.textContent='$'+fmt(v);
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+</script>
+</body>
+</html>

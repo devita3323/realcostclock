@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "siteTitle": "The Real Cost Clock",
+    "tagline": "What current immigration & guest-worker policy costs you — counted from the government's own numbers.",
+    "lastReviewed": "2026-06-24",
+    "note": "Figures are official periodic agency releases, not real-time feeds. Each item shows its source and the date it covers.",
+    "lastFetched": "2026-06-24"
+  },
+  "metrics": [
+    {
+      "id": "h1b_registrations",
+      "tier": 1,
+      "group": "Guest-worker visas — annual, official",
+      "label": "H-1B registrations filed",
+      "period": "FY2025",
+      "value": 470342,
+      "format": "count",
+      "sub": "~135,000 were selected (≈29%). Statutory cap: 85,000 new per year.",
+      "source": "USCIS H-1B Registration Statistics",
+      "sourceUrl": "https://www.uscis.gov/working-in-the-united-states/temporary-workers/h-1b-specialty-occupations/h-1b-electronic-registration-process",
+      "auto": false,
+      "updateCadence": "Annual (spring) — manual"
+    },
+    {
+      "id": "h1b_approved",
+      "tier": 1,
+      "group": "Guest-worker visas — annual, official",
+      "label": "H-1B petitions approved",
+      "period": "FY2024",
+      "value": 400000,
+      "prefix": "~",
+      "format": "count",
+      "sub": "~142,000 were NEW employment; the rest were renewals.",
+      "source": "USCIS FY2024 H-1B Report to Congress",
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/legal-docs/ola_signed_fy2024_h1b_petitions.pdf",
+      "auto": false,
+      "updateCadence": "Annual — manual (PDF)"
+    },
+    {
+      "id": "h2a_certified",
+      "tier": 1,
+      "group": "Guest-worker visas — annual, official",
+      "label": "H-2A farm positions certified",
+      "period": "FY2024",
+      "value": 384000,
+      "prefix": "~",
+      "format": "count",
+      "sub": "Temporary agricultural labor certifications (DOL).",
+      "source": "DOL OFLC H-2A Selected Statistics FY2024",
+      "sourceUrl": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/H-2A_Selected_Statistics_FY2024_Q4.pdf",
+      "auto": false,
+      "updateCadence": "Quarterly — semi (download + parse)"
+    },
+    {
+      "id": "h2b_certified",
+      "tier": 1,
+      "group": "Guest-worker visas — annual, official",
+      "label": "H-2B non-farm positions certified",
+      "period": "FY2024",
+      "value": 232995,
+      "format": "count",
+      "sub": "Seasonal non-agricultural labor certifications (DOL).",
+      "source": "DOL OFLC H-2B Statistical Factsheet FY2024",
+      "sourceUrl": "https://www.dol.gov/sites/dolgov/files/ETA/oflc/pdfs/DOS-DOL_H-2B_Selected_Statistical_Factsheet_FY2024.pdf",
+      "auto": false,
+      "updateCadence": "Quarterly — semi (download + parse)"
+    },
+    {
+      "id": "remittances_us_outflow",
+      "tier": 1,
+      "group": "Money leaving the country — official",
+      "label": "Remittances sent abroad from the U.S.",
+      "period": "2024",
+      "value": 103179000000,
+      "format": "money",
+      "sub": "The U.S. is the world's #1 remittance-sending country.",
+      "source": "World Bank Open Data (BM.TRF.PWKR.CD.DT)",
+      "sourceUrl": "https://data.worldbank.org/indicator/BM.TRF.PWKR.CD.DT?locations=US",
+      "auto": true,
+      "updateCadence": "Annual — AUTO via World Bank API"
+    },
+    {
+      "id": "remittances_mexico_received",
+      "tier": 1,
+      "group": "Money leaving the country — official",
+      "label": "Remittances received by Mexico (all sources)",
+      "period": "2024",
+      "value": 67637913797,
+      "format": "money",
+      "sub": "Mexico is the world's #2 remittance recipient.",
+      "source": "World Bank Open Data (BX.TRF.PWKR.CD.DT)",
+      "sourceUrl": "https://data.worldbank.org/indicator/BX.TRF.PWKR.CD.DT?locations=MX",
+      "auto": true,
+      "updateCadence": "Annual — AUTO via World Bank API"
+    },
+    {
+      "id": "remittance_projection",
+      "tier": 1,
+      "group": "Money leaving the country — official",
+      "label": "Projected outflow accruing this year",
+      "period": "projected at 2024 rate",
+      "value": 103179000000,
+      "format": "ticker",
+      "sub": "Live projection at the 2024 annual rate — NOT a measured real-time figure. Illustrates scale only.",
+      "source": "Basis: World Bank 2024 outflow",
+      "sourceUrl": "https://data.worldbank.org/indicator/BM.TRF.PWKR.CD.DT?locations=US",
+      "auto": true,
+      "updateCadence": "Derived from the auto figure above"
+    },
+    {
+      "id": "unauthorized_population",
+      "tier": 2,
+      "group": "Contested figures — shown as a transparent range",
+      "label": "Unauthorized population",
+      "period": "mid-2023 estimate",
+      "value": 14000000,
+      "prefix": "~",
+      "format": "count",
+      "sub": "Estimate — methods vary roughly ±2 million.",
+      "source": "Pew Research / DHS OHSS",
+      "sourceUrl": "https://www.pewresearch.org/wp-content/uploads/sites/20/2025/08/RE_2025.08.21_Unauthorized-Immigrants_REPORT.pdf",
+      "auto": false,
+      "updateCadence": "~Annual — manual, human-reviewed"
+    },
+    {
+      "id": "fiscal_cost_range",
+      "tier": 2,
+      "group": "Contested figures — shown as a transparent range",
+      "label": "Net fiscal impact of illegal immigration",
+      "period": "annual / lifetime estimates — DISPUTED",
+      "format": "rangeMulti",
+      "estimates": [
+        {
+          "org": "FAIR",
+          "lean": "Restrictionist advocacy org",
+          "finding": "~$151B net annual COST",
+          "detail": "Gross cost minus ~$32B in taxes paid by this group.",
+          "url": "https://www.fairus.org/issue/publications-resources/fiscal-burden-illegal-immigration-united-states-taxpayers-2023"
+        },
+        {
+          "org": "AEI",
+          "lean": "Center-right think tank",
+          "finding": "~$80K lifetime net COST per unlawful immigrant",
+          "detail": "Vs. roughly +$350K net contribution per average LEGAL immigrant (30-yr NPV, 2025 update).",
+          "url": "https://www.aei.org/research-products/report/the-fiscal-impact-of-immigration-an-update/"
+        },
+        {
+          "org": "Cato",
+          "lean": "Libertarian think tank",
+          "finding": "Net BENEFIT (~$1.7T over 30 yrs)",
+          "detail": "Finds immigrants reduced deficits; published a direct rebuttal calling FAIR's method flawed.",
+          "url": "https://www.cato.org/white-paper/immigrants-recent-effects-government-budgets-1994-2023"
+        }
+      ],
+      "sub": "There is no single agreed number — credible institutions land from large net cost (FAIR) to net benefit (Cato), with AEI in between distinguishing legal vs. unlawful immigrants. We show all three and link each so you can judge. Displaying the full spread is what keeps this site credible and fact-check-proof.",
+      "source": "FAIR · AEI · Cato (see each link above)",
+      "sourceUrl": "https://www.aei.org/research-products/report/the-fiscal-impact-of-immigration-an-update/",
+      "auto": false,
+      "updateCadence": "~Annual — manual, human-reviewed; watcher flags new studies"
+    }
+  ]
+}

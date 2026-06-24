@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Real Cost Clock</title>
+<meta name="description" content="What current U.S. immigration and guest-worker policy costs — counted from the government's own numbers. Every figure links to its primary source.">
+<style>
+  :root{
+    --bg:#0a0e14; --panel:#121823; --panel2:#0f141d; --line:#1f2a3a;
+    --txt:#e8eef6; --muted:#8aa0bb; --accent:#d4af37;
+    --t1:#d4af37; --t2:#5b9bd5; --green:#3fbf7f; --red:#e25555;
+    --mono:'SF Mono',ui-monospace,'Roboto Mono',Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#13203a 0%,var(--bg) 55%);
+       color:var(--txt);font-family:var(--sans);line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  header{text-align:center;padding:18px 0 8px}
+  .flagbar{height:4px;width:120px;margin:0 auto 18px;
+    background:linear-gradient(90deg,#b22234 33%,#fff 33% 66%,#3c3b6e 66%);border-radius:2px}
+  h1{font-size:clamp(28px,5vw,46px);margin:0 0 6px;letter-spacing:-.5px}
+  .tag{color:var(--muted);max-width:660px;margin:0 auto;font-size:15px}
+  .tag b{color:var(--accent)}
+  .legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:22px 0 6px;font-size:12.5px;color:var(--muted)}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .sectitle{margin:34px 0 4px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:14px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+        border-radius:14px;padding:18px 18px 14px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--t1)}
+  .card.t2::before{background:var(--t2)}
+  .label{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pill{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid var(--line);color:var(--t1)}
+  .t2 .pill{color:var(--t2)}
+  .num{font-family:var(--mono);font-size:clamp(24px,3.2vw,32px);font-weight:600;letter-spacing:-1px;line-height:1.1}
+  .num.est{color:var(--accent)}
+  .sub{font-size:12.5px;color:var(--muted);margin-top:6px}
+  .srcline{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:12px}
+  .srcline a{color:var(--t2);text-decoration:none}
+  .srcline a:hover{text-decoration:underline}
+  .auto-badge{font-size:10px;color:var(--green);border:1px solid #1c3a2a;border-radius:20px;padding:1px 6px;margin-left:6px}
+  .note{background:#0f141d;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:28px;font-size:13.5px;color:var(--muted)}
+  .note b{color:var(--txt)}
+  details{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:#0f141d}
+  summary{cursor:pointer;padding:14px 18px;font-weight:600;color:var(--txt)}
+  details[open] summary{border-bottom:1px solid var(--line)}
+  .methods{padding:8px 18px 18px;font-size:13px;color:var(--muted)}
+  .methods li{margin:6px 0}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+  .stamp{font-size:11px;color:#637a96}
+  #loading{text-align:center;color:var(--muted);padding:40px}
+  .card.wide{grid-column:1/-1}
+  .estgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:6px 0 4px}
+  .estrow{border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:#0c1119}
+  .estorg{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}
+  .estorg a{color:var(--t2);text-decoration:none;font-weight:600;font-size:15px}
+  .estorg a:hover{text-decoration:underline}
+  .estlean{font-size:10.5px;color:var(--muted);text-align:right}
+  .estfind{font-family:var(--mono);font-size:14px;color:var(--accent);line-height:1.35}
+  .estdetail{display:block;font-family:var(--sans);font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.45}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="flagbar"></div>
+    <h1 id="title">The Real Cost Clock</h1>
+    <p class="tag" id="tagline"></p>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--t1)"></span>Hard count — official federal data</span>
+      <span><span class="dot" style="background:var(--t2)"></span>Labeled estimate — research org</span>
+      <span><span class="auto-badge">AUTO</span> updates itself from a live API</span>
+    </div>
+  </header>
+
+  <div id="loading">Loading the latest figures…</div>
+  <div id="content"></div>
+
+  <details>
+    <summary>Methodology &amp; why it's built this way</summary>
+    <div class="methods">
+      <ul>
+        <li><b>Hard counts</b> come straight from USCIS and the U.S. Department of Labor. They reflect official fiscal-year releases, not real-time feeds.</li>
+        <li><b>Remittance figures</b> auto-update from the World Bank Indicators API (free, public, no key). Marked <span class="auto-badge">AUTO</span>.</li>
+        <li><b>Estimates</b> (unauthorized population, fiscal cost) come from named research orgs and are reviewed by a human before publishing. The fiscal-cost figure is a FAIR high-end estimate shown <em>with</em> the offsetting taxes-paid noted; Cato and CBO estimate lower. Showing the range is what keeps the site credible.</li>
+        <li><b>Deliberately excluded:</b> off-the-books labor and "lost wages from Americans." Those can't be measured, only guessed — a fabricated counter would discredit every real number beside it.</li>
+        <li>Every figure links to its primary source so anyone can verify it.</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="note" id="reviewnote"></div>
+  <footer>Not affiliated with any government agency. Built for public transparency. Figures rounded for display; click any source for exact values.</footer>
+</div>
+
+<script>
+function fmtCount(n){return n.toLocaleString('en-US');}
+function fmtMoney(n){
+  if(n>=1e12) return '$'+(n/1e12).toFixed(2)+' trillion';
+  if(n>=1e9)  return '$'+(n/1e9).toFixed(1)+' billion';
+  if(n>=1e6)  return '$'+(n/1e6).toFixed(1)+' million';
+  return '$'+fmtCount(n);
+}
+function animateCount(el,target,money,prefix){
+  var start=performance.now(),dur=2000;
+  function step(now){
+    var p=Math.min((now-start)/dur,1), eased=1-Math.pow(1-p,3), v=Math.floor(eased*target);
+    el.textContent = money ? fmtMoney(v) : (prefix||'')+fmtCount(v);
+    if(p<1) requestAnimationFrame(step);
+    else el.textContent = money ? fmtMoney(target) : (prefix||'')+fmtCount(target);
+  }
+  requestAnimationFrame(step);
+}
+
+function card(m){
+  var t2 = m.tier===2 ? ' t2' : '';
+  var auto = m.auto ? '<span class="auto-badge">AUTO</span>' : '';
+
+  // Multi-source comparison card (e.g. the disputed fiscal figure).
+  if(m.format==='rangeMulti'){
+    var rows = m.estimates.map(function(e){
+      return '<div class="estrow">'+
+        '<div class="estorg"><a href="'+e.url+'" target="_blank" rel="noopener">'+e.org+' ↗</a>'+
+        '<span class="estlean">'+e.lean+'</span></div>'+
+        '<div class="estfind">'+e.finding+'<span class="estdetail">'+e.detail+'</span></div>'+
+      '</div>';
+    }).join('');
+    return '<div class="card t2 wide">'+
+      '<div class="label">'+m.label+' <span class="pill">'+m.period+'</span></div>'+
+      '<div class="estgrid">'+rows+'</div>'+
+      '<div class="sub">'+m.sub+'</div>'+
+    '</div>';
+  }
+
+  var valHtml;
+  if(m.format==='rangeNote'){
+    valHtml = '<div class="num est">'+m.valueText+' <span style="color:var(--muted);font-size:14px">high-end est.</span></div>';
+  } else if(m.format==='ticker'){
+    valHtml = '<div class="num est" data-ticker="'+m.value+'">$0</div>';
+  } else {
+    var est = m.tier===2 ? ' est' : '';
+    valHtml = '<div class="num'+est+'" data-target="'+m.value+'" data-money="'+(m.format==='money')+'" data-prefix="'+(m.prefix||'')+'">0</div>';
+  }
+  return '<div class="card'+t2+'">'+
+    '<div class="label">'+m.label+' <span class="pill">'+m.period+'</span>'+auto+'</div>'+
+    valHtml+
+    '<div class="sub">'+m.sub+'</div>'+
+    '<div class="srcline">Source: <a href="'+m.sourceUrl+'" target="_blank" rel="noopener">'+m.source+' ↗</a></div>'+
+  '</div>';
+}
+
+fetch('data.json?v='+Date.now())
+  .then(function(r){ if(!r.ok) throw new Error('data.json not found'); return r.json(); })
+  .then(function(data){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('title').textContent = data.meta.siteTitle;
+    document.getElementById('tagline').innerHTML = data.meta.tagline.replace('government’s own numbers','<b>government’s own numbers</b>');
+
+    // group metrics in order of first appearance
+    var groups = [], seen = {};
+    data.metrics.forEach(function(m){ if(!seen[m.group]){ seen[m.group]=[]; groups.push(m.group);} seen[m.group].push(m); });
+
+    var html='';
+    groups.forEach(function(g){
+      html += '<div class="sectitle">'+g+'</div><div class="grid">';
+      seen[g].forEach(function(m){ 
