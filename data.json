@@ -4,7 +4,7 @@
     "tagline": "What current immigration & guest-worker policy costs you — counted from the government's own numbers.",
     "lastReviewed": "2026-06-24",
     "note": "Figures are official periodic agency releases, not real-time feeds. Each item shows its source and the date it covers.",
-    "lastFetched": "2026-07-01"
+    "lastFetched": "2026-08-01"
   },
   "metrics": [
     {
@@ -70,8 +70,8 @@
       "tier": 1,
       "group": "Money leaving the country — official",
       "label": "Remittances sent abroad from the U.S.",
-      "period": "2024",
-      "value": 103179000000,
+      "period": "2025",
+      "value": 107097000000,
       "format": "money",
       "sub": "The U.S. is the world's #1 remittance-sending country.",
       "source": "World Bank Open Data (BM.TRF.PWKR.CD.DT)",
@@ -84,8 +84,8 @@
       "tier": 1,
       "group": "Money leaving the country — official",
       "label": "Remittances received by Mexico (all sources)",
-      "period": "2024",
-      "value": 67637913797,
+      "period": "2025",
+      "value": 64391618338,
       "format": "money",
       "sub": "Mexico is the world's #2 remittance recipient.",
       "source": "World Bank Open Data (BX.TRF.PWKR.CD.DT)",
@@ -99,7 +99,7 @@
       "group": "Money leaving the country — official",
       "label": "Projected outflow accruing this year",
       "period": "projected at 2024 rate",
-      "value": 103179000000,
+      "value": 107097000000,
       "format": "ticker",
       "sub": "Live projection at the 2024 annual rate — NOT a measured real-time figure. Illustrates scale only.",
       "source": "Basis: World Bank 2024 outflow",
